@@ -1,0 +1,12 @@
+:root{
+    --bg-azul-sena: #04324c;
+    --azul-sena-variant: #04324D;
+    --verde-sena: #39a900;
+    --bg-forms: #E6E6E6;
+}
+
+body {
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Work Sans Regular', sans-serif;
+}

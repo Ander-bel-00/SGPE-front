@@ -1,0 +1,20 @@
+.header-login{
+    height: 4rem;
+    padding: 4px; /* Ajusta el padding según sea necesario */
+    background-color: var(--bg-azul-sena);
+    display: flex;
+    align-items: center; /* Centra verticalmente los elementos */
+    justify-content: space-between;
+}
+
+.header-login__logo-sgpe{
+    position: relative;
+    right: 7%;
+    width: 21rem;
+    height: 24rem;
+}
+
+.header-login__logo-sena{
+    width: 7rem;
+    height: 6.4rem;
+}
