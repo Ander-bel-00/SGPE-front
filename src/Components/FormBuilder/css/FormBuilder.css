@@ -67,6 +67,15 @@
     border-radius: 5px;
     border: 1px solid #ccc;
   }
+
+  .form-builder select {
+    margin: 10px 0;
+    padding: 10px;
+    width: 94%;
+    max-width: 600px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
   
   .questions {
     margin-top: 20px;
@@ -80,6 +89,9 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     background: #fff;
+  }
+
+  .question-item-move{
     cursor: move;
   }
 
@@ -142,11 +154,26 @@
   .question-type-dropdown button:hover {
     background: #f1f1f1;
   }
+
+  .btn-add-option{
+    margin-top: 10px;
+    padding: 8px 12px;
+    background: #39a900;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 1rem;
+  }
+
+  .btn-add-option:hover{
+    background-color: #339602;
+  }
   
   .remove-button {
     margin-top: 10px;
     padding: 8px 12px;
-    background: #ff3d00;
+    background: #ff0000;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -154,7 +181,7 @@
   }
   
   .remove-button:hover {
-    background: #d50000;
+    background: #ec0101;
   }
   
   .save-button {
@@ -171,3 +198,22 @@
     background: #3700b3;
   }
   
+  .option-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+    width: 100%;
+    position: relative;
+    right: 15%;
+}
+
+.option-item input[type="radio"],
+.option-item input[type="checkbox"] {
+    position: relative;
+    right: 5%;
+}
+
+.option-input{
+  position: relative;
+  right: 15%;
+}

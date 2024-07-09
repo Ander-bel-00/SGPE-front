@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { ChromePicker } from 'react-color'; // Importa el selector de colores
 import './css/FormBuilder.css';
+import clienteAxios from '../../api/axios';
+import Swal from 'sweetalert2'; // Importa SweetAlert
 
 const FormBuilder = ({ onSave }) => {
     const [questions, setQuestions] = useState([]);
@@ -8,7 +10,7 @@ const FormBuilder = ({ onSave }) => {
     const [formDescription, setFormDescription] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
-    const [customizationOpen, setCustomizationOpen] = useState(false);
+    const [customizationOpen, setCustomizationOpen] = useState(null);
     const [headerColor, setHeaderColor] = useState('');
     const [questionBorderColor, setQuestionBorderColor] = useState('');
     const [formBackgroundColor, setFormBackgroundColor] = useState('');
@@ -37,19 +39,18 @@ const FormBuilder = ({ onSave }) => {
 
     const addQuestion = (type) => {
         const newQuestion = {
-            id: `question-${Date.now()}`,
             type,
             content: '',
             answer: '',
             options: []
         };
-
+    
         if (type === 'short-answer') {
             newQuestion.answerPlaceholder = 'Respuesta Corta';
         } else if (type === 'long-answer') {
             newQuestion.answerPlaceholder = 'Respuesta Larga';
         }
-
+    
         setQuestions([...questions, newQuestion]);
     };
 
@@ -107,15 +108,46 @@ const FormBuilder = ({ onSave }) => {
         setQuestions(newQuestions);
     };
 
-    const saveForm = () => {
+    const saveForm = async () => {
+        // Verificar que hay preguntas agregadas
+        if (questions.length === 0) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Debe agregar al menos una pregunta al formulario.'
+            });
+            return;
+        }
+
+        // Verificar que los campos obligatorios estén llenos
+        if (!formTitle || !formDescription || !startDate || !endDate) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Todos los campos son obligatorios. Por favor, llene todos los campos del formulario.'
+            });
+            return;
+        }
+
         const newForm = {
             title: formTitle,
             description: formDescription,
             startDate,
             endDate,
-            questions
+            questions,
+            headerColor,
+            questionBorderColor,
+            formBackgroundColor
         };
-        onSave(newForm);
+      
+        try {
+            const response = await clienteAxios.post('/forms/new', newForm);
+            onSave(response.data);
+      
+            console.log('Enlace público:', response.data.publicLink);
+        } catch (error) {
+            console.error('Error saving form:', error);
+        }
     };
 
     const handleColorChange = (color) => {
@@ -126,10 +158,6 @@ const FormBuilder = ({ onSave }) => {
         } else if (customizationOpen === 'background') {
             setFormBackgroundColor(color.hex);
         }
-    };
-
-    const toggleCustomization = () => {
-        setCustomizationOpen(!customizationOpen);
     };
 
     const openColorPicker = (type) => {
@@ -143,15 +171,15 @@ const FormBuilder = ({ onSave }) => {
     return (
         <div className="form-builder-container">
             <div className="form-builder" style={{ borderTop: headerColor ? `8px solid ${headerColor}` : 'none', backgroundColor: formBackgroundColor }}>
-                <input type="text" placeholder="Título del Formulario" value={formTitle} onChange={(e) => setFormTitle(e.target.value)} />
+                <input type="text" placeholder="Título del Formulario" value={formTitle} onChange={(e) => setFormTitle(e.target.value)} required/>
                 <textarea placeholder="Descripción del Formulario" value={formDescription} onChange={(e) => setFormDescription(e.target.value)}></textarea>
-                <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
-                <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+                <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} required/>
+                <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} required/>
                 <div className="questions">
                     {questions.map((question, index) => (
                         <div
                             key={question.id}
-                            className="question-item"
+                            className="question-item question-item-move"
                             draggable
                             onDragStart={(e) => handleDragStart(e, index)}
                             onDragOver={handleDragOver}
@@ -193,7 +221,7 @@ const FormBuilder = ({ onSave }) => {
                             {(question.type === 'multiple-choice' || question.type === 'checkboxes' || question.type === 'dropdown') && (
                                 <div>
                                     {question.options.map((option, optionIndex) => (
-                                        <div key={optionIndex}>
+                                        <div key={optionIndex} className="option-item">
                                             <input
                                                 type={question.type === 'checkboxes' ? 'checkbox' : 'radio'}
                                                 checked={false}
@@ -204,13 +232,15 @@ const FormBuilder = ({ onSave }) => {
                                                 value={option}
                                                 onChange={(e) => handleOptionChange(index, optionIndex, e.target.value)}
                                                 placeholder={`Opción ${optionIndex + 1}`}
+                                                className='option-input'
                                             />
                                         </div>
                                     ))}
-                                    <button onClick={() => addOption(index)}>Agregar Opción</button>
+                                    
                                 </div>
                             )}
-                            <button onClick={() => removeQuestion(index)}>Eliminar</button>
+                            <button onClick={() => addOption(index)} className='btn-add-option'>Agregar Opción</button>
+                            <button onClick={() => removeQuestion(index)} className='remove-button'>Eliminar</button>
                         </div>
                     ))}
                 </div>
@@ -230,23 +260,17 @@ const FormBuilder = ({ onSave }) => {
                         </div>
                     )}
                 </div>
-                <div className="customization">
-                    <button onClick={toggleCustomization} className='btn-sidena-forms'>Personalización</button>
-                    {customizationOpen && (
+                <div className="customization-section">
+                    <button onClick={() => setCustomizationOpen(customizationOpen ? null : 'open')} className='btn-sidena-forms'>Personalizar</button>
+                    {customizationOpen === 'open' && (
                         <div className="customization-options">
-                            <button onClick={() => openColorPicker('header')} className='select-question-type'>Color de Encabezado</button>
-                            <button onClick={() => openColorPicker('question')} className='select-question-type'>Color de Pregunta</button>
-                            <button onClick={() => openColorPicker('background')} className='select-question-type'>Color de Fondo</button>
-                            {customizationOpen === 'header' && (
-                                <ChromePicker color={headerColor} onChangeComplete={(color) => handleColorChange(color)} />
-                            )}
-                            {customizationOpen === 'question' && (
-                                <ChromePicker color={questionBorderColor} onChangeComplete={(color) => handleColorChange(color)} />
-                            )}
-                            {customizationOpen === 'background' && (
-                                <ChromePicker color={formBackgroundColor} onChangeComplete={(color) => handleColorChange(color)} />
-                            )}
+                            <button onClick={() => openColorPicker('header')} className='select-question-type'>Encabezado</button>
+                            <button onClick={() => openColorPicker('question')} className='select-question-type'>Borde de Pregunta</button>
+                            <button onClick={() => openColorPicker('background')} className='select-question-type'>Fondo</button>
                         </div>
+                    )}
+                    {customizationOpen !== 'open' && customizationOpen !== null && (
+                        <ChromePicker color={customizationOpen === 'header' ? headerColor : customizationOpen === 'question' ? questionBorderColor : formBackgroundColor} onChange={handleColorChange} />
                     )}
                 </div>
             </div>

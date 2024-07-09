@@ -1,0 +1,43 @@
+.gira-tecnica-box{
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.gira-tecnica-card {
+  width: 80%;
+  max-width: 600px;
+  background-color: #F6F6F6;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-top: 1rem;
+}
+
+.gira-tecnica-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+  text-align: center;
+}
+
+.gira-tecnica-details {
+  line-height: 1.6;
+}
+
+.gira-tecnica-details p {
+  margin-bottom: 10px;
+}
+
+.gira-tecnica-details strong {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+@media (max-width: 768px) {
+  .gira-tecnica-card {
+    width: 90%;
+  }
+}

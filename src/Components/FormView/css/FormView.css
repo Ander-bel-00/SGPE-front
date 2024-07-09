@@ -1,0 +1,84 @@
+.form-view-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    font-family: 'Arial', sans-serif;
+    border: 1px solid #ddd;
+    margin-top: 1rem;
+}
+
+.form-view-container h1 {
+    font-size: 2.5rem;
+    color: #333333;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.form-view-container p {
+    font-size: 1.2rem;
+    color: #666666;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.question-response {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.question-response p {
+    font-size: 1.2rem;
+    color: #333333;
+    margin-bottom: 10px;
+}
+
+.question-response input[type="text"],
+.question-response textarea {
+    width: 90%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    margin-top: 10px;
+}
+
+.question-response input[type="text"]:focus,
+.question-response textarea:focus {
+    border-color: #6200ea;
+    outline: none;
+}
+
+.question-response textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+.btn-send-box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-view-container button {
+    display: block;
+    width: 30%;
+    padding: 15px;
+    background-color: #39a900;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.form-view-container  button:hover {
+    background-color: #329401;
+}

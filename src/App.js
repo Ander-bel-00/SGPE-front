@@ -11,6 +11,7 @@ import Menu from "./Components/layouts/Menu/Menu";
 import GiraTecnicaData from "./Components/GiraTecnicaData/GiraTecnicaData";
 import FormBuilder from "./Components/FormBuilder/FormBuilder";
 import FormList from "./Components/FormList/FormList";
+import FormView from "./Components/FormView/FormView";
 
 function App() {
   const { isAuthenticated, userRole, handleLogout, showNav, setShowNav } =
@@ -21,6 +22,7 @@ function App() {
   const addForm = (newForm) => {
     setForms([...forms, newForm]);
   };
+
   return (
     <BrowserRouter>
       <Routes>
@@ -41,14 +43,16 @@ function App() {
           }
         />
 
+        {/* Ruta pública para visualizar y responder formularios */}
         <Route
-          path="/"
+          path="/form/:id"
           element={
-            !isAuthenticated ? (
-              <Navigate to="/login" />
-            ) : (
-              <ProtectedRoute userRole={sessionStorage.getItem("userRole")} />
-            )
+            <Fragment>
+              <Header />
+              <main className="main-container">
+                <FormView />
+              </main>
+            </Fragment>
           }
         />
 
@@ -58,8 +62,7 @@ function App() {
           element={
             <ProtectedRoute
               isAllowed={
-                !!sessionStorage.getItem("isAuthenticated") &&
-                sessionStorage.getItem("userRole") === "Admin"
+                isAuthenticated && userRole === "Admin"
               }
               redirectTo="/login"
             >
@@ -94,26 +97,46 @@ function App() {
                         {isCreating ? (
                           <main className="main-container">
                             <FormBuilder
-                            onSave={(form) => {
-                              addForm(form);
-                              setIsCreating(false);
-                            }}
-                          />
+                              onSave={(form) => {
+                                addForm(form);
+                                setIsCreating(false);
+                              }}
+                            />
                           </main>
                         ) : (
                           <main className="main-container">
                             <FormList
-                            forms={forms}
-                            onCreate={() => setIsCreating(true)}
-                          />
+                              forms={forms}
+                              onCreate={() => setIsCreating(true)}
+                            />
                           </main>
                         )}
                       </Fragment>
                     }
                   />
+                  <Route
+                    path="/form/:id"
+                    element={
+                      <main className="main-container">
+                        <FormView />
+                      </main>
+                    }
+                  />
                 </Routes>
               </Fragment>
             </ProtectedRoute>
+          }
+        />
+
+        {/* Ruta de redireccionamiento por defecto */}
+        <Route
+          path="/*"
+          element={
+            isAuthenticated ? (
+              <Navigate to={`/${userRole}`} />
+            ) : (
+              <Navigate to="/login" />
+            )
           }
         />
       </Routes>

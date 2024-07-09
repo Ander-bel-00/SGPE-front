@@ -1,0 +1,34 @@
+.popup-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    z-index: 999;
+  }
+  
+  .message-content {
+    text-align: center;
+  }
+  
+  .message-content p {
+    margin-bottom: 10px;
+  }
+  
+  .message-content button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .message-content button:hover {
+    background-color: #0056b3;
+  }
+  
