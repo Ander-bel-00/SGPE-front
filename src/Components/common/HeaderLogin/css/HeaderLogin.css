@@ -18,3 +18,20 @@
     width: 7rem;
     height: 6.4rem;
 }
+
+
+@media screen and (max-width: 480px) {
+    .header-login__logo-sgpe{
+        position: relative;
+        right: 25%;
+        width: 21rem;
+        height: 24rem;
+    }
+    
+    .header-login__logo-sena{
+        width: 7rem;
+        height: 6.4rem;
+        position: relative;
+        right: 12%;
+    }
+}

@@ -1,0 +1,70 @@
+.sidenav {
+  width: 20px;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  padding: 20px;
+  background: #00324d;
+  z-index: 100;
+}
+
+/* Estilos adicionales para la lista de enlaces */
+.sidenav ul {
+  padding: 0px;
+  margin: 0;
+  list-style: none;
+  position: relative;
+  right: 20px;
+  bottom: 1rem;
+  margin-top: 1rem;
+}
+
+.sidenav__close-btn {
+  display: none;
+}
+
+.sidenav ul li {
+  width: 90px;
+}
+
+.sidenav ul li a {
+  display: block;
+  color: #fff;
+  text-decoration: none;
+  font-size: 20px;
+  padding: 9%;
+  padding-right: 30px;
+  border-radius: 6px;
+  margin-bottom: 12%;
+  transition: background-color 0.3s;
+}
+
+.sidenav ul li a:hover,
+.sidenav ul li a:active {
+  width: 20px;
+  background: #787a7a4d;
+  color: #fff;
+}
+
+.sidenav__hovered-options {
+  position: fixed;
+  top: 80px;
+  left: calc(80px + 20px); /* 70px del menú + 20px de padding */
+  transform: translateY(-50%);
+  z-index: 1001;
+}
+
+.sidenav__hovered-text {
+  background-color: #00324d;
+  color: #fff;
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+/* Estilos para el contenedor que envuelve al icono y al <li> */
+.menu-option-wrapper {
+  display: inline-block;
+  padding: 8px;
+}

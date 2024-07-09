@@ -1,0 +1,39 @@
+.GirasTecnicas-title{
+    text-align: center;
+    color: var(--titles-color-1);
+}
+
+.GirasTecnicas-table{
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 2px;
+    box-shadow: 1px 1px 1px 2px rgba(0.3, 0.3, 0.3, 0.2);
+}
+
+.GirasTecnicas-table__tr:nth-child(even) {
+    background-color: #f2f2f2; /* Gris claro */
+}
+
+.GirasTecnicas-table__tr:hover{
+    background-color: #ddd; /* Gris más oscuro */
+    cursor: pointer;
+}
+
+.GirasTecnicas-table__th{
+    border: 1px solid #dddddd;
+    background-color: #04324D;
+    color: #fff;
+    text-align: left;
+    padding: 8px;
+}
+
+.GirasTecnicas-table__td{
+    text-align: left;
+    padding: 8px;
+    border: 1px solid #ccc;
+}
+
+.GirasTecnicas-table__tbody__link{
+    text-decoration: none;
+    color: #000;
+}

@@ -6,6 +6,9 @@ import { useAuth } from "../../context/AuthContext";
 function Login() {
   const { handleLogin } = useAuth();
 
+  // Estado para mostrar spinner si se está cargando los datos.
+  const [loading, setLoading] = useState(false); 
+
   const [formData, setFormData] = useState({
     tipo_documento: "",
     numero_documento: "",
@@ -26,17 +29,32 @@ function Login() {
     setFormData({ ...formData, [name]: value });
   };
 
+  // Función para manejar el envío de datos del formulario de Login.
   const onSubmit = async (e) => {
+    // Previene el efecto por defecto del evento así evita que se envíe el formulario antes de tener todos los datos.
     e.preventDefault();
+
+    setLoading(true); // Activar el estado de carga
+
+    // Aquí irá el código para enviar los datos del estado formData a la función handleLogin.
     try {
+      // Se envían los datos del formulario del Login (Se usa await para dar una espera mientras se obtienen los datos).
       await handleLogin(navigate, formData);
     } catch (error) {
+      // Catch en caso de error se hace una acción.
+
+      // Mostrar en consola el error.
       console.log(error);
+      // Si se encuentra un array de errores guardar lo que contie ese array.
       if (Array.isArray(error.response.data)) {
+        // Guardar en el estado de errores todo lo que contenga el array error.
         setErrors(error.response.data);
       } else {
+        // Si no es un array solo almacenar el mensaje que se recibe del error.
         setErrors([error.response.data.message]);
       }
+    } finally {
+      setLoading(false); // Desactivar el estado de carga
     }
   };
 
@@ -96,7 +114,7 @@ function Login() {
             </Link>
           </div>
           <button className="login-content__login-form-box__form__footer__botton">
-            Iniciar sesión
+          {loading ? <span className="system__spinner"></span> : "Iniciar sesión"}
           </button>
           {errors.map((error, i) => (
             <div

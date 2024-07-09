@@ -1,7 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import { Navigate } from 'react-router-dom';
 import clienteAxios from "../api/axios";
-
+import Cookies from 'js-cookie';
 const AuthContext = createContext();
 
 export const useAuth = () => {
@@ -32,10 +32,15 @@ export const AuthProvider = ({ children }) => {
   const handleLogin = async (navigate, formData) => {
     try {
       const res = await clienteAxios.post("/auth/login", formData);
+      if(!res) {
+        sessionStorage.clear();
+        return <Navigate to="/login" />;
+      }
       setIsAuthenticated(true);
       setUserRole(res.data.usuario.rol);
       const token = res.data.token;
       sessionStorage.setItem("token", token);
+      Cookies.set("token", token);
       sessionStorage.setItem("isAuthenticated", true);
       sessionStorage.setItem("userRole", res.data.usuario.rol);
       navigate(`/${res.data.usuario.rol}`);
@@ -50,6 +55,7 @@ export const AuthProvider = ({ children }) => {
       await clienteAxios.post('/auth/logout');
       // Limpiar todos los datos de sessionStorage
       sessionStorage.clear();
+      Cookies.remove("token");
       setIsAuthenticated(false);
       setUserRole(null);
       setShowNav(false);
